@@ -1,0 +1,21 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+find_dependency(Threads)
+
+include("${CMAKE_CURRENT_LIST_DIR}/AdaptiveRoutingFabricTargets.cmake")
+
+check_required_components(AdaptiveRoutingFabric)
+
+# Fail fast when the documented imported target is absent rather than letting a
+# downstream configure succeed and fail later at link time.
+if(NOT TARGET SummonSoftwareLabs::AdaptiveRoutingFabric)
+  set(AdaptiveRoutingFabric_FOUND FALSE)
+  message(FATAL_ERROR
+    "AdaptiveRoutingFabric package did not export the documented imported target "
+    "SummonSoftwareLabs::AdaptiveRoutingFabric")
+endif()
+
+set(AdaptiveRoutingFabric_LIBRARIES SummonSoftwareLabs::AdaptiveRoutingFabric)
+get_target_property(AdaptiveRoutingFabric_INCLUDE_DIRS
+  SummonSoftwareLabs::AdaptiveRoutingFabric INTERFACE_INCLUDE_DIRECTORIES)
